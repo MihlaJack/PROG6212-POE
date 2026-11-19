@@ -1,0 +1,50 @@
+@model List<RaceDayWeb.Models.EnrolmentDto>
+@{
+    ViewData["Title"] = "Event Enrolments";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Event Enrolments</h2>
+        <a href="@Url.Action("Events")" class="btn btn-secondary">Back to Events</a>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="alert alert-info">
+            <strong>Total Enrolments:</strong> @Model.Count
+        </div>
+        
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Participant</th>
+                        <th>Email</th>
+                        <th>Category</th>
+                        <th>Enrolled Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var enrolment in Model)
+                    {
+                        <tr>
+                            <td>@enrolment.ParticipantName</td>
+                            <td>@enrolment.ParticipantEmail</td>
+                            <td>@enrolment.CategoryName</td>
+                            <td>@enrolment.EnrolledAt.ToString("dd MMM yyyy")</td>
+                            <td><span class="status-confirmed">Confirmed</span></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning">
+            <p>No participants have enrolled in this event yet.</p>
+        </div>
+    }
+</div>

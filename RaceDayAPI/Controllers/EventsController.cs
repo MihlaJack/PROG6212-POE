@@ -40,6 +40,7 @@ public class EventsController : ControllerBase
                 e.Location,
                 e.Distance,
                 e.EventType,
+                e.BannerImageUrl,
                 OrganiserName = e.Organiser.FirstName + " " + e.Organiser.LastName,
                 Categories = e.Categories.Select(c => new { c.CategoryId, c.Name })
             })
@@ -69,6 +70,7 @@ public class EventsController : ControllerBase
                 e.Location,
                 e.Distance,
                 e.EventType,
+                e.BannerImageUrl,
                 OrganiserName = e.Organiser.FirstName + " " + e.Organiser.LastName,
                 Categories = e.Categories.Select(c => new { c.CategoryId, c.Name, c.Description })
             })

@@ -1,0 +1,94 @@
+@model List<RaceDayWeb.Models.EnrolmentDto>
+@{
+    ViewData["Title"] = "Capture Results";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Capture Event Results</h2>
+        <a href="@Url.Action("Events")" class="btn btn-secondary">Back to Events</a>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="alert alert-info">
+            <p>Enter finish times and positions for each participant below.</p>
+        </div>
+        
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Participant</th>
+                        <th>Category</th>
+                        <th>Finish Time (HH:MM:SS)</th>
+                        <th>Position</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var enrolment in Model)
+                    {
+                        <tr>
+                            <td>@enrolment.ParticipantName</td>
+                            <td>@enrolment.CategoryName</td>
+                            <td>
+                                <input type="time" class="form-control form-control-sm" step="1" id="finishTime_@enrolment.EnrolmentId" required />
+                            </td>
+                            <td>
+                                <input type="number" class="form-control form-control-sm" min="1" id="position_@enrolment.EnrolmentId" required />
+                            </td>
+                            <td>
+                                <button onclick="saveResult(@enrolment.UserId, @ViewBag.EventId, '@enrolment.EnrolmentId')" class="btn btn-sm btn-success">Save</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning">
+            <p>No participants enrolled in this event. Results can only be captured for enrolled participants.</p>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        function saveResult(userId, eventId, enrolmentId) {
+            const finishTime = document.getElementById('finishTime_' + enrolmentId).value;
+            const position = document.getElementById('position_' + enrolmentId).value;
+            
+            if (!finishTime || !position) {
+                alert('Please enter both finish time and position');
+                return;
+            }
+            
+            // Create the result
+            const formData = new FormData();
+            formData.append('UserId', userId);
+            formData.append('EventId', eventId);
+            formData.append('FinishTime', finishTime);
+            formData.append('FinishingPosition', position);
+            
+            fetch('/api/results', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data) {
+                    alert('Result saved successfully!');
+                    location.reload();
+                } else {
+                    alert('Failed to save result');
+                }
+            })
+            .catch(error => {
+                alert('Error saving result: ' + error);
+            });
+        }
+    </script>
+}

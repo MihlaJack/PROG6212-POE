@@ -106,6 +106,8 @@ public class CategorySummaryDto
 public class EnrolmentDto
 {
     public int EnrolmentId { get; set; }
+    public int UserId { get; set; }
+    public string? UserName { get; set; }
     public string EventName { get; set; } = string.Empty;
     public DateTime EventDate { get; set; }
     public string CategoryName { get; set; } = string.Empty;

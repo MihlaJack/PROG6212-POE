@@ -1,0 +1,36 @@
+@model RaceDayWeb.Models.CategoryCreateRequest
+@{
+    ViewData["Title"] = "Create Category";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Add Category</h2>
+    
+    <div class="card">
+        <div class="card-body">
+            <form asp-action="CreateCategory" method="post">
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger">
+                        @Html.ValidationSummary(true)
+                    </div>
+                }
+                
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label">Category Name</label>
+                    <input asp-for="Name" class="form-control" required placeholder="e.g., Senior, Under 20, 10km" />
+                </div>
+                
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label">Description</label>
+                    <textarea asp-for="Description" class="form-control" rows="2" placeholder="e.g., Age 40-49 or 10km race"></textarea>
+                </div>
+                
+                <input type="hidden" asp-for="EventId" />
+                
+                <button type="submit" class="btn btn-primary">Add Category</button>
+                <a href="@Url.Action("Categories", new { eventId = Model.EventId })" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>

@@ -95,10 +95,13 @@ public class EnrolmentsController : ControllerBase
         var enrolments = await _context.Enrolments
             .Include(e => e.Event)
             .Include(e => e.Category)
+            .Include(e => e.User)
             .Where(e => e.UserId == userId)
             .Select(e => new
             {
                 e.EnrolmentId,
+                e.UserId,
+                UserName = e.User.FirstName + " " + e.User.LastName,
                 EventName = e.Event.Name,
                 EventDate = e.Event.EventDate,
                 CategoryName = e.Category.Name,

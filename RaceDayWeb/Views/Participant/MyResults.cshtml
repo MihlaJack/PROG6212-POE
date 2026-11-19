@@ -1,0 +1,43 @@
+@model List<RaceDayWeb.Models.ResultDto>
+@{
+    ViewData["Title"] = "My Results";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">My Race Results</h2>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Event</th>
+                        <th>Date</th>
+                        <th>Finish Time</th>
+                        <th>Position</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var result in Model)
+                    {
+                        <tr>
+                            <td>@result.EventName</td>
+                            <td>@result.EventDate.ToString("dd MMM yyyy")</td>
+                            <td>@result.FinishTime.ToString(@"hh\:mm\:ss")</td>
+                            <td>@result.FinishingPosition@(result.FinishingPosition == 1 ? "st" : result.FinishingPosition == 2 ? "nd" : result.FinishingPosition == 3 ? "rd" : "th")</td>
+                            <td><span class="status-confirmed">Recorded</span></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            <p>No race results recorded yet. Results are captured by event organisers after events conclude.</p>
+        </div>
+    }
+</div>

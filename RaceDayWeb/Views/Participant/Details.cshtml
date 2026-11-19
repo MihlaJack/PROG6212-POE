@@ -1,0 +1,72 @@
+@model RaceDayWeb.Models.EventDto
+@{
+    ViewData["Title"] = "Event Details";
+}
+
+<div class="container mt-4">
+    @if (Model != null)
+    {
+        <div class="card mb-4">
+            @if (!string.IsNullOrEmpty(Model.BannerImageUrl))
+            {
+                <img src="@Model.BannerImageUrl" class="card-img-top" alt="@Model.Name" style="height: 400px; object-fit: cover;">
+            }
+            <div class="card-body">
+                <h2 class="card-title">@Model.Name</h2>
+                <p class="card-text text-muted">@Model.EventDate.ToString("dddd, dd MMM yyyy HH:mm")</p>
+                <hr>
+                <h5>Description</h5>
+                <p class="card-text">@Model.Description</p>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <p><strong>Location:</strong> @Model.Location</p>
+                        <p><strong>Distance:</strong> @Model.Distance km</p>
+                        <p><strong>Type:</strong> @Model.EventType</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Organiser:</strong> @Model.OrganiserName</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0">Available Categories</h5>
+            </div>
+            <div class="card-body">
+                @if (ViewBag.Categories != null && ((List<RaceDayWeb.Models.CategoryDto>)ViewBag.Categories).Any())
+                {
+                    <form asp-action="Enrol" method="post">
+                        <input type="hidden" name="EventId" value="@Model.EventId" />
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Select a Category to Enrol</label>
+                            <select name="CategoryId" class="form-select" required>
+                                <option value="">Choose a category...</option>
+                                @foreach (var category in (List<RaceDayWeb.Models.CategoryDto>)ViewBag.Categories)
+                                {
+                                    <option value="@category.CategoryId">@category.Name - @category.Description</option>
+                                }
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Enrol in this Event</button>
+                    </form>
+                }
+                else
+                {
+                    <p class="text-muted">No categories available for this event yet.</p>
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger">
+            <p>Event not found.</p>
+        </div>
+    }
+    
+    <a href="@Url.Action("Index")" class="btn btn-secondary">Back to Events</a>
+</div>

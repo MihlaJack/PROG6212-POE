@@ -1,0 +1,58 @@
+@model List<RaceDayWeb.Models.EventDto>
+@{
+    ViewData["Title"] = "Browse Events";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Upcoming Events</h2>
+    
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <select class="form-select" id="eventTypeFilter">
+                <option value="">All Types</option>
+                <option value="Run">Run</option>
+                <option value="Walk">Walk</option>
+                <option value="Cycle">Cycle</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <input type="text" class="form-control" id="searchFilter" placeholder="Search events...">
+        </div>
+        <div class="col-md-4">
+            <button class="btn btn-primary w-100">Filter</button>
+        </div>
+    </div>
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="row">
+            @foreach (var eventItem in Model)
+            {
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100">
+                        @if (!string.IsNullOrEmpty(eventItem.BannerImageUrl))
+                        {
+                            <img src="@eventItem.BannerImageUrl" class="card-img-top" alt="@eventItem.Name" style="height: 200px; object-fit: cover;">
+                        }
+                        <div class="card-body">
+                            <h5 class="card-title">@eventItem.Name</h5>
+                            <p class="card-text"><small class="text-muted">@eventItem.EventDate.ToString("dd MMM yyyy")</small></p>
+                            <p class="card-text">@eventItem.Location</p>
+                            <p class="card-text"><strong>@eventItem.EventType</strong> - @eventItem.Distance km</p>
+                            <p class="card-text"><small>Organised by: @eventItem.OrganiserName</small></p>
+                            <div class="mt-2">
+                                <a href="@Url.Action("Details", new { id = eventItem.EventId })" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            <p>No upcoming events available at the moment. Check back later!</p>
+        </div>
+    }
+</div>

@@ -17,6 +17,7 @@ public class ApiService
         _httpContextAccessor = httpContextAccessor;
         _configuration = configuration;
         _httpClient.BaseAddress = new Uri(_configuration["ApiBaseUrl"] ?? "https://localhost:5201");
+        _httpClient.DefaultRequestHeaders.Add("Cookie", new Microsoft.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
     }
 
     private void AddAuthHeader()

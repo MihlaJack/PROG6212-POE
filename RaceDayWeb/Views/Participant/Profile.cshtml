@@ -1,0 +1,75 @@
+@model RaceDayWeb.Models.UserProfileDto
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">My Profile</h2>
+    
+    @if (Model != null)
+    {
+        <div class="row">
+            <div class="col-md-4 text-center">
+                @if (!string.IsNullOrEmpty(Model.ProfilePictureUrl))
+                {
+                    <img src="@Model.ProfilePictureUrl" class="profile-picture mb-3" alt="Profile Picture">
+                }
+                else
+                {
+                    <div class="profile-picture mb-3 d-flex align-items-center justify-content-center bg-secondary">
+                        <i class="bi bi-person" style="font-size: 4rem;"></i>
+                    </div>
+                }
+                <h4>@Model.FirstName @Model.LastName</h4>
+                <p class="text-muted">@Model.Role</p>
+            </div>
+            
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Edit Profile</h5>
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="Profile" method="post" enctype="multipart/form-data">
+                            @if (!ViewData.ModelState.IsValid)
+                            {
+                                <div class="alert alert-danger">
+                                    @Html.ValidationSummary(true)
+                                </div>
+                            }
+                            
+                            <div class="mb-3">
+                                <label class="form-label">First Name</label>
+                                <input name="FirstName" class="form-control" value="@Model.FirstName" required />
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Last Name</label>
+                                <input name="LastName" class="form-control" value="@Model.LastName" required />
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Email</label>
+                                <input name="Email" class="form-control" value="@Model.Email" required />
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Profile Picture</label>
+                                <input type="file" name="profilePicture" class="form-control" accept="image/*" />
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">Update Profile</button>
+                        </form>
+                    </div>
+                </div>
+                
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <p><strong>Member Since:</strong> @Model.CreatedAt.ToString("dd MMM yyyy")</p>
+                        <p><strong>User ID:</strong> @Model.UserId</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

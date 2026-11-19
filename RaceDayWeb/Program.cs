@@ -17,6 +17,7 @@ builder.Services.AddSession(options =>
 });
 
 // Register API client service
+builder.Services.AddHttpClient();
 builder.Services.AddScoped<ApiService>();
 
 // Add CORS

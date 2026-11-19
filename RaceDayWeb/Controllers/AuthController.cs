@@ -63,8 +63,9 @@ public class AuthController : Controller
         return View(request);
     }
 
-    public IActionResult Logout()
+    public async Task<IActionResult> Logout()
     {
+        await _apiService.LogoutAsync();
         HttpContext.Session.Clear();
         return RedirectToAction("Login");
     }

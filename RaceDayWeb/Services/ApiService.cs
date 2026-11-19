@@ -20,11 +20,11 @@ public class ApiService
 
     private void AddAuthHeader()
     {
-        // Forward the session cookie to the API so it knows who the user is
-        var cookie = _httpContextAccessor.HttpContext?.Request.Cookies[".AspNetCore.Session"];
-        if (!string.IsNullOrEmpty(cookie))
+        // Forward the API session cookie to the API so it knows who the user is
+        var apiSessionCookie = _httpContextAccessor.HttpContext?.Session.GetString("ApiSessionCookie");
+        if (!string.IsNullOrEmpty(apiSessionCookie))
         {
-            _httpClient.DefaultRequestHeaders.Add("Cookie", $".AspNetCore.Session={cookie}");
+            _httpClient.DefaultRequestHeaders.Add("Cookie", $".AspNetCore.Session={apiSessionCookie}");
         }
     }
 
@@ -34,6 +34,17 @@ public class ApiService
 
         if (response.IsSuccessStatusCode)
         {
+            // Store the API session cookie for future requests
+            var setCookieHeader = response.Headers.GetValues("Set-Cookie").FirstOrDefault();
+            if (setCookieHeader != null)
+            {
+                var match = System.Text.RegularExpressions.Regex.Match(setCookieHeader, @"\.AspNetCore\.Session=([^;]+)");
+                if (match.Success)
+                {
+                    var sessionCookie = match.Groups[1].Value;
+                    _httpContextAccessor.HttpContext?.Session.SetString("ApiSessionCookie", sessionCookie);
+                }
+            }
             return await response.Content.ReadFromJsonAsync<LoginResponse>();
         }
 
@@ -44,6 +55,16 @@ public class ApiService
     {
         var response = await _httpClient.PostAsJsonAsync("/api/auth/register", request);
 
+        return response.IsSuccessStatusCode;
+    }
+
+    public async Task<bool> LogoutAsync()
+    {
+        AddAuthHeader();
+        var response = await _httpClient.PostAsync("/api/auth/logout", null);
+
+        // Clear the stored API session cookie regardless of response
+        _httpContextAccessor.HttpContext?.Session.Remove("ApiSessionCookie");
         return response.IsSuccessStatusCode;
     }
 

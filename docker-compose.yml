@@ -1,0 +1,35 @@
+# Docker Compose for RaceDay
+
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: RaceDayAPI/Dockerfile
+    container_name: raceday-api
+    ports:
+      - "5201:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Server=host.docker.internal;Database=RaceDayDB;Trusted_Connection=True;MultipleActiveResultSets=true
+      - ConnectionStrings__AzureStorage=DefaultEndpointsProtocol=https;AccountName=youraccount;AccountKey=yourkey;EndpointSuffix=core.windows.net
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${HOME}/.aspnet/DataProtection-Keys:/root/.aspnet/DataProtection-Keys
+
+  web:
+    build:
+      context: .
+      dockerfile: RaceDayWeb/Dockerfile
+    container_name: raceday-web
+    ports:
+      - "5200:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ApiBaseUrl=http://api:80
+    depends_on:
+      - api
+
+volumes:
+  sqlserver-data:

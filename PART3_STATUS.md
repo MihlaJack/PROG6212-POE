@@ -218,7 +218,7 @@ Update `README.md`:
 - **Branch:** main
 - **Commits:** 21 total (20 from Part 2, 1 from Part 3)
 - **Current Commit:** "Add Azure Blob Storage integration to API"
-- **Repository:** https://github.com/MihlaJack/PROG6212-PART-2
+- **Repository:** https://github.com/MihlaJack/PROG6212-POE
 
 ## Notes
 

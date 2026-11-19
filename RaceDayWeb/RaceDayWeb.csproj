@@ -4,6 +4,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Product>RaceDay Application</Product>
+    <Description>Web frontend for the RaceDay event management platform</Description>
   </PropertyGroup>
 
   <ItemGroup>

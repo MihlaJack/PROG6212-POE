@@ -10,8 +10,8 @@
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/MihlaJack/PROG6212-PART-2.git
-cd PROG6212-PART-2
+git clone https://github.com/MihlaJack/PROG6212-POE.git
+cd PROG6212-POE
 ```
 
 ### 2. Configure Database
@@ -40,7 +40,7 @@ API will run on https://localhost:5201
 cd RaceDayWeb
 dotnet run
 ```
-MVC will run on https://localhost:5200
+MVC will run on https://localhost:5202
 
 ## Testing the Application
 
@@ -51,7 +51,7 @@ MVC will run on https://localhost:5200
 4. Test API endpoints
 
 ### MVC Testing
-1. Open the web app: https://localhost:5200
+1. Open the web app: https://localhost:5202
 2. Register a new account
 3. Login and test role-specific features
 4. Test event creation, enrolment, results
@@ -67,7 +67,7 @@ docker run -p 5201:80 -e "ConnectionStrings__DefaultConnection=Server=host.docke
 ### Build and Run MVC
 ```bash
 docker build -f RaceDayWeb/Dockerfile -t raceday-web .
-docker run -p 5200:80 -e "ApiBaseUrl=http://host.docker.internal:5201" raceday-web
+docker run -p 5202:80 -e "ApiBaseUrl=http://host.docker.internal:5201" raceday-web
 ```
 
 ## Azure Blob Storage Setup

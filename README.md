@@ -1,4 +1,4 @@
-# RaceDay - Event Management System
+# RaceDay Application - Event Management System
 
 ## Overview
 
@@ -64,6 +64,8 @@ Before running this project, ensure you have the following installed:
 - Visual Studio 2022 or VS Code with C# extension
 - Docker Desktop (for containerization)
 - Git
+
+> **Note:** The apps run over HTTPS by default. If you haven't trusted the ASP.NET Core developer certificate yet, run `dotnet dev-certs https --trust` once before starting the projects.
 
 ## Setup Instructions
 
@@ -143,7 +145,7 @@ cd RaceDayWeb
 dotnet run
 ```
 
-The MVC application will start on `https://localhost:5200` (or a similar port).
+The MVC application will start on `https://localhost:5202` (or a similar port).
 
 ### 8. Access Swagger Documentation
 
@@ -172,7 +174,7 @@ docker build -f RaceDayWeb/Dockerfile -t raceday-web .
 docker run -p 5201:80 -e "ConnectionStrings__DefaultConnection=Server=host.docker.internal;Database=RaceDayDB;Trusted_Connection=True;MultipleActiveResultSets=true" raceday-api
 
 # Run MVC container
-docker run -p 5200:80 -e "ApiBaseUrl=http://host.docker.internal:5201" raceday-web
+docker run -p 5202:80 -e "ApiBaseUrl=http://host.docker.internal:5201" raceday-web
 ```
 
 ## Project Structure
@@ -314,7 +316,7 @@ docker build -f RaceDayWeb/Dockerfile -t raceday-web .
 
 ```bash
 docker run -p 5201:80 -e "ConnectionStrings__DefaultConnection=Server=host.docker.internal;Database=RaceDayDB;Trusted_Connection=True;MultipleActiveResultSets=true" raceday-api
-docker run -p 5200:80 -e "ApiBaseUrl=http://host.docker.internal:5201" raceday-web
+docker run -p 5202:80 -e "ApiBaseUrl=http://host.docker.internal:5201" raceday-web
 ```
 
 ## Video Presentation

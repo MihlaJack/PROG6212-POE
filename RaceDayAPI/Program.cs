@@ -40,7 +40,7 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
     {
-        Title = "RaceDay API",
+        Title = "RaceDay Application API",
         Version = "v1",
         Description = "Event management system for South African road running, walking, and cycling events"
     });
@@ -59,7 +59,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
-        policy.WithOrigins("https://localhost:5200", "http://localhost:5200")
+        policy.WithOrigins("https://localhost:5202", "http://localhost:5203", "https://localhost:5200", "http://localhost:5200")
               .AllowAnyMethod()
               .AllowAnyHeader()
               .AllowCredentials();

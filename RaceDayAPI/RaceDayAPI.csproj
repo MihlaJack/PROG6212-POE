@@ -5,6 +5,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Product>RaceDay Application</Product>
+    <Description>REST API for the RaceDay event management platform</Description>
   </PropertyGroup>
 
   <ItemGroup>

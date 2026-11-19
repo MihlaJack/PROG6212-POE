@@ -24,7 +24,7 @@ services:
       dockerfile: RaceDayWeb/Dockerfile
     container_name: raceday-web
     ports:
-      - "5200:80"
+      - "5202:80"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ApiBaseUrl=http://api:80

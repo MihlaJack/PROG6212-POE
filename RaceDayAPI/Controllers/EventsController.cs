@@ -111,6 +111,7 @@ public class EventsController : ControllerBase
             Location = createDto.Location,
             Distance = createDto.Distance,
             EventType = createDto.EventType,
+            BannerImageUrl = createDto.BannerImageUrl,
             OrganiserId = userId,
             CreatedAt = DateTime.UtcNow
         };
@@ -160,6 +161,7 @@ public class EventsController : ControllerBase
         eventToUpdate.Location = updateDto.Location;
         eventToUpdate.Distance = updateDto.Distance;
         eventToUpdate.EventType = updateDto.EventType;
+        eventToUpdate.BannerImageUrl = updateDto.BannerImageUrl;
 
         await _context.SaveChangesAsync();
 

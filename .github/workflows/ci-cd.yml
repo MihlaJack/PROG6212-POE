@@ -28,6 +28,10 @@ jobs:
     - name: Run unit tests
       run: dotnet test --configuration Release --no-build --verbosity normal
 
-    - name: Publish build artifacts
+    - name: Publish API build artifacts
       if: success()
-      run: dotnet publish RaceDayAPI/RaceDayAPI/RaceDayAPI.csproj --configuration Release --output ./publish
+      run: dotnet publish RaceDayAPI/RaceDayAPI/RaceDayAPI.csproj --configuration Release --output ./publish-api
+
+    - name: Publish MVC build artifacts
+      if: success()
+      run: dotnet publish RaceDayAPI/RaceDayWeb/RaceDayWeb.csproj --configuration Release --output ./publish-web

@@ -38,6 +38,7 @@ public class UsersController : ControllerBase
                 LastName = u.LastName,
                 Email = u.Email,
                 Role = u.Role,
+                ProfilePictureUrl = u.ProfilePictureUrl,
                 CreatedAt = u.CreatedAt
             })
             .FirstOrDefaultAsync();
@@ -70,6 +71,7 @@ public class UsersController : ControllerBase
         user.FirstName = updateDto.FirstName;
         user.LastName = updateDto.LastName;
         user.Email = updateDto.Email;
+        user.ProfilePictureUrl = updateDto.ProfilePictureUrl;
 
         await _context.SaveChangesAsync();
 
@@ -80,6 +82,7 @@ public class UsersController : ControllerBase
             LastName = user.LastName,
             Email = user.Email,
             Role = user.Role,
+            ProfilePictureUrl = user.ProfilePictureUrl,
             CreatedAt = user.CreatedAt
         });
     }

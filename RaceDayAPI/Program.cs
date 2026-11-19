@@ -28,6 +28,9 @@ builder.Services.AddDbContext<RaceDayDbContext>(options =>
 // Register the auth service so controllers can use it
 builder.Services.AddScoped<IAuthService, AuthService>();
 
+// Register the blob storage service for file uploads
+builder.Services.AddScoped<IBlobStorageService, BlobStorageService>();
+
 // Set up Swagger for API documentation
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>

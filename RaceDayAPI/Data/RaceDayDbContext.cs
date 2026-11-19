@@ -34,6 +34,7 @@ public class RaceDayDbContext : DbContext
             entity.HasKey(e => e.EventId);
             entity.Property(e => e.Name).IsRequired();
             entity.Property(e => e.EventType).IsRequired();
+            entity.Property(e => e.Distance).HasPrecision(10, 2);
             entity.HasOne(e => e.Organiser)
                   .WithMany(u => u.OrganisedEvents)
                   .HasForeignKey(e => e.OrganiserId)
@@ -62,11 +63,11 @@ public class RaceDayDbContext : DbContext
             entity.HasOne(e => e.Event)
                   .WithMany(e => e.Enrolments)
                   .HasForeignKey(e => e.EventId)
-                  .OnDelete(DeleteBehavior.Cascade);
+                  .OnDelete(DeleteBehavior.ClientCascade);
             entity.HasOne(e => e.Category)
                   .WithMany(c => c.Enrolments)
                   .HasForeignKey(e => e.CategoryId)
-                  .OnDelete(DeleteBehavior.Cascade);
+                  .OnDelete(DeleteBehavior.ClientCascade);
             
             // Make sure a user can't enrol in the same event twice
             entity.HasIndex(e => new { e.UserId, e.EventId }).IsUnique();
@@ -83,7 +84,7 @@ public class RaceDayDbContext : DbContext
             entity.HasOne(e => e.Event)
                   .WithMany()
                   .HasForeignKey(e => e.EventId)
-                  .OnDelete(DeleteBehavior.Cascade);
+                  .OnDelete(DeleteBehavior.ClientCascade);
             
             // Only one result per user per event allowed
             entity.HasIndex(e => new { e.UserId, e.EventId }).IsUnique();

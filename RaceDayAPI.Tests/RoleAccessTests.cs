@@ -12,7 +12,7 @@ public class RoleAccessTests
     {
         var options = new DbContextOptionsBuilder<RaceDayDbContext>()
             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-            .ConfigureWarnings(x => x.Ignore(InMemoryEventId.TransactionWarning))
+            .ConfigureWarnings(x => x.Ignore(InMemoryEventId.TransactionIgnoredWarning))
             .Options;
 
         var context = new RaceDayDbContext(options);

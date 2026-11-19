@@ -76,7 +76,7 @@ public class CategoriesController : ControllerBase
 
         if (userRole != "Organiser")
         {
-            return Forbid(new { message = "Only Organisers can create categories" });
+            return StatusCode(StatusCodes.Status403Forbidden, new { message = "Only Organisers can create categories" });
         }
 
         int userId = (int)HttpContext.Items["UserId"]!;
@@ -90,7 +90,7 @@ public class CategoriesController : ControllerBase
 
         if (eventCheck.OrganiserId != userId)
         {
-            return Forbid(new { message = "You can only create categories for your own events" });
+            return StatusCode(StatusCodes.Status403Forbidden, new { message = "You can only create categories for your own events" });
         }
 
         var newCategory = new Category

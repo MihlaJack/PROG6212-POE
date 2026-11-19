@@ -98,7 +98,7 @@ public class EventsController : ControllerBase
         // Only organisers can create events - participants can't
         if (userRole != "Organiser")
         {
-            return Forbid(new { message = "Only Organisers can create events" });
+            return StatusCode(StatusCodes.Status403Forbidden, new { message = "Only Organisers can create events" });
         }
 
         // Get the user ID so we know who the organiser is
@@ -139,7 +139,7 @@ public class EventsController : ControllerBase
 
         if (userRole != "Organiser")
         {
-            return Forbid(new { message = "Only Organisers can update events" });
+            return StatusCode(StatusCodes.Status403Forbidden, new { message = "Only Organisers can update events" });
         }
 
         int userId = (int)HttpContext.Items["UserId"]!;
@@ -154,7 +154,7 @@ public class EventsController : ControllerBase
         // Check if the user is the organiser of this event
         if (eventToUpdate.OrganiserId != userId)
         {
-            return Forbid(new { message = "You can only update your own events" });
+            return StatusCode(StatusCodes.Status403Forbidden, new { message = "You can only update your own events" });
         }
 
         eventToUpdate.Name = updateDto.Name;
@@ -182,7 +182,7 @@ public class EventsController : ControllerBase
 
         if (userRole != "Organiser")
         {
-            return Forbid(new { message = "Only Organisers can delete events" });
+            return StatusCode(StatusCodes.Status403Forbidden, new { message = "Only Organisers can delete events" });
         }
 
         int userId = (int)HttpContext.Items["UserId"]!;
@@ -197,7 +197,7 @@ public class EventsController : ControllerBase
         // Check if the user is the organiser of this event
         if (eventToDelete.OrganiserId != userId)
         {
-            return Forbid(new { message = "You can only delete your own events" });
+            return StatusCode(StatusCodes.Status403Forbidden, new { message = "You can only delete your own events" });
         }
 
         _context.Events.Remove(eventToDelete);

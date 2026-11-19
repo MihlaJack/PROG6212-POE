@@ -33,7 +33,7 @@ public class ResultsController : ControllerBase
 
         if (userRole != "Organiser")
         {
-            return Forbid(new { message = "Only Organisers can capture results" });
+            return StatusCode(StatusCodes.Status403Forbidden, new { message = "Only Organisers can capture results" });
         }
 
         // Get the organiser's ID
@@ -48,7 +48,7 @@ public class ResultsController : ControllerBase
 
         if (eventCheck.OrganiserId != userId)
         {
-            return Forbid(new { message = "You can only capture results for your own events" });
+            return StatusCode(StatusCodes.Status403Forbidden, new { message = "You can only capture results for your own events" });
         }
 
         // Check the participant actually exists
@@ -121,7 +121,7 @@ public class ResultsController : ControllerBase
 
         if (userRole != "Organiser")
         {
-            return Forbid(new { message = "Only Organisers can view event results" });
+            return StatusCode(StatusCodes.Status403Forbidden, new { message = "Only Organisers can view event results" });
         }
 
         int userId = (int)HttpContext.Items["UserId"]!;
@@ -135,7 +135,7 @@ public class ResultsController : ControllerBase
 
         if (eventCheck.OrganiserId != userId)
         {
-            return Forbid(new { message = "You can only view results for your own events" });
+            return StatusCode(StatusCodes.Status403Forbidden, new { message = "You can only view results for your own events" });
         }
 
         var results = await _context.Results

@@ -33,7 +33,7 @@ public class EnrolmentsController : ControllerBase
 
         if (userRole != "Participant")
         {
-            return Forbid(new { message = "Only Participants can enrol in events" });
+            return StatusCode(StatusCodes.Status403Forbidden, new { message = "Only Participants can enrol in events" });
         }
 
         // Get the current user's ID from the session
@@ -124,7 +124,7 @@ public class EnrolmentsController : ControllerBase
 
         if (userRole != "Organiser")
         {
-            return Forbid(new { message = "Only Organisers can view event enrolments" });
+            return StatusCode(StatusCodes.Status403Forbidden, new { message = "Only Organisers can view event enrolments" });
         }
 
         int userId = (int)HttpContext.Items["UserId"]!;
@@ -138,7 +138,7 @@ public class EnrolmentsController : ControllerBase
 
         if (eventCheck.OrganiserId != userId)
         {
-            return Forbid(new { message = "You can only view enrolments for your own events" });
+            return StatusCode(StatusCodes.Status403Forbidden, new { message = "You can only view enrolments for your own events" });
         }
 
         var enrolments = await _context.Enrolments

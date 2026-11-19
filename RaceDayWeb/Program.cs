@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Session;
+using RaceDayWeb.Services;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);

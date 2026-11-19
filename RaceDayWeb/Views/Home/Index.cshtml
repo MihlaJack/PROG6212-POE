@@ -1,0 +1,50 @@
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="hero-section">
+    <div class="container">
+        <h1>Welcome to RaceDay</h1>
+        <p class="lead">Your premier event management platform for South African road running, walking, and cycling events</p>
+        @if (Context.Session.GetString("UserId") == null)
+        {
+            <a href="@Url.Action("Register", "Auth")" class="btn btn-light btn-lg mt-3">Get Started</a>
+        }
+        else
+        {
+            <a href="@(Context.Session.GetString("UserRole") == "Organiser" ? Url.Action("Dashboard", "Organiser") : Url.Action("Index", "Participant"))" class="btn btn-light btn-lg mt-3">Go to Dashboard</a>
+        }
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <i class="bi bi-person-running" style="font-size: 3rem; color: var(--primary-color);"></i>
+                    <h5 class="card-title mt-3">Running Events</h5>
+                    <p class="card-text">From 5km fun runs to ultra marathons</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <i class="bi bi-person-walking" style="font-size: 3rem; color: var(--primary-color);"></i>
+                    <h5 class="card-title mt-3">Walking Events</h5>
+                    <p class="card-text">Community walks and charity events</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <i class="bi bi-bicycle" style="font-size: 3rem; color: var(--primary-color);"></i>
+                    <h5 class="card-title mt-3">Cycling Events</h5>
+                    <p class="card-text">Road races and mountain biking</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

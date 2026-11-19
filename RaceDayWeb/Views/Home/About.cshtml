@@ -1,0 +1,44 @@
+@{
+    ViewData["Title"] = "About";
+}
+
+<div class="container mt-5">
+    <h2 class="mb-4">About RaceDay</h2>
+    
+    <div class="row">
+        <div class="col-md-8">
+            <p class="lead">RaceDay is a comprehensive event management platform designed specifically for the South African road running, walking, and cycling community.</p>
+            
+            <h4>Our Mission</h4>
+            <p>We aim to revolutionize how sporting events are organized and participated in South Africa by providing a modern, digital platform that connects event organizers with participants in a seamless, efficient manner.</p>
+            
+            <h4>What We Offer</h4>
+            <ul>
+                <li><strong>For Organizers:</strong> Complete event management tools including event creation, category management, participant registration tracking, and results capture.</li>
+                <li><strong>For Participants:</strong> Easy event discovery, one-click registration, personal event tracking, and race result management.</li>
+                <li><strong>Advanced Features:</strong> Image uploads for event banners and profile pictures, real-time updates, and comprehensive event details.</li>
+            </ul>
+            
+            <h4>Built With</h4>
+            <ul>
+                <li>ASP.NET Core Web API for the backend</li>
+                <li>Entity Framework Core for database management</li>
+                <li>Azure Blob Storage for file uploads</li>
+                <li>Bootstrap 5 for responsive design</li>
+                <li>Docker for containerization</li>
+            </ul>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Get Involved</h5>
+                </div>
+                <div class="card-body">
+                    <p>Join our community of runners, walkers, and cyclists today!</p>
+                    <a href="@Url.Action("Register", "Auth")" class="btn btn-primary w-100">Register Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

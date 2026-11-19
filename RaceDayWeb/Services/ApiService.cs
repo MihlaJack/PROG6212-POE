@@ -1,8 +1,5 @@
-using System.Net.Http.Headers;
-using System.Text;
-using System.Text.Json;
+using System.Net.Http.Json;
 using RaceDayWeb.Models;
-using Microsoft.AspNetCore.Http;
 
 namespace RaceDayWeb.Services;
 
@@ -33,14 +30,11 @@ public class ApiService
 
     public async Task<LoginResponse?> LoginAsync(LoginRequest request)
     {
-        var json = JsonSerializer.Serialize(request);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
-        var response = await _httpClient.PostAsync("/api/auth/login", content);
+        var response = await _httpClient.PostAsJsonAsync("/api/auth/login", request);
 
         if (response.IsSuccessStatusCode)
         {
-            var responseContent = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<LoginResponse>(responseContent);
+            return await response.Content.ReadFromJsonAsync<LoginResponse>();
         }
 
         return null;
@@ -48,9 +42,7 @@ public class ApiService
 
     public async Task<bool> RegisterAsync(RegisterRequest request)
     {
-        var json = JsonSerializer.Serialize(request);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
-        var response = await _httpClient.PostAsync("/api/auth/register", content);
+        var response = await _httpClient.PostAsJsonAsync("/api/auth/register", request);
 
         return response.IsSuccessStatusCode;
     }
@@ -62,8 +54,7 @@ public class ApiService
 
         if (response.IsSuccessStatusCode)
         {
-            var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<List<EventDto>>(content);
+            return await response.Content.ReadFromJsonAsync<List<EventDto>>();
         }
 
         return null;
@@ -76,8 +67,7 @@ public class ApiService
 
         if (response.IsSuccessStatusCode)
         {
-            var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<EventDto>(content);
+            return await response.Content.ReadFromJsonAsync<EventDto>();
         }
 
         return null;
@@ -86,9 +76,7 @@ public class ApiService
     public async Task<bool> CreateEventAsync(EventCreateRequest request)
     {
         AddAuthHeader();
-        var json = JsonSerializer.Serialize(request);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
-        var response = await _httpClient.PostAsync("/api/events", content);
+        var response = await _httpClient.PostAsJsonAsync("/api/events", request);
 
         return response.IsSuccessStatusCode;
     }
@@ -96,9 +84,7 @@ public class ApiService
     public async Task<bool> UpdateEventAsync(int id, EventUpdateRequest request)
     {
         AddAuthHeader();
-        var json = JsonSerializer.Serialize(request);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
-        var response = await _httpClient.PutAsync($"/api/events/{id}", content);
+        var response = await _httpClient.PutAsJsonAsync($"/api/events/{id}", request);
 
         return response.IsSuccessStatusCode;
     }
@@ -118,8 +104,7 @@ public class ApiService
 
         if (response.IsSuccessStatusCode)
         {
-            var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<List<CategoryDto>>(content);
+            return await response.Content.ReadFromJsonAsync<List<CategoryDto>>();
         }
 
         return null;
@@ -128,9 +113,7 @@ public class ApiService
     public async Task<bool> CreateCategoryAsync(CategoryCreateRequest request)
     {
         AddAuthHeader();
-        var json = JsonSerializer.Serialize(request);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
-        var response = await _httpClient.PostAsync("/api/categories", content);
+        var response = await _httpClient.PostAsJsonAsync("/api/categories", request);
 
         return response.IsSuccessStatusCode;
     }
@@ -138,9 +121,7 @@ public class ApiService
     public async Task<bool> EnrolAsync(EnrolmentRequest request)
     {
         AddAuthHeader();
-        var json = JsonSerializer.Serialize(request);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
-        var response = await _httpClient.PostAsync("/api/enrolments", content);
+        var response = await _httpClient.PostAsJsonAsync("/api/enrolments", request);
 
         return response.IsSuccessStatusCode;
     }
@@ -152,8 +133,7 @@ public class ApiService
 
         if (response.IsSuccessStatusCode)
         {
-            var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<List<EnrolmentDto>>(content);
+            return await response.Content.ReadFromJsonAsync<List<EnrolmentDto>>();
         }
 
         return null;
@@ -166,8 +146,7 @@ public class ApiService
 
         if (response.IsSuccessStatusCode)
         {
-            var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<List<EnrolmentDto>>(content);
+            return await response.Content.ReadFromJsonAsync<List<EnrolmentDto>>();
         }
 
         return null;
@@ -176,9 +155,7 @@ public class ApiService
     public async Task<bool> CreateResultAsync(ResultCreateRequest request)
     {
         AddAuthHeader();
-        var json = JsonSerializer.Serialize(request);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
-        var response = await _httpClient.PostAsync("/api/results", content);
+        var response = await _httpClient.PostAsJsonAsync("/api/results", request);
 
         return response.IsSuccessStatusCode;
     }
@@ -190,8 +167,7 @@ public class ApiService
 
         if (response.IsSuccessStatusCode)
         {
-            var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<List<ResultDto>>(content);
+            return await response.Content.ReadFromJsonAsync<List<ResultDto>>();
         }
 
         return null;
@@ -204,8 +180,7 @@ public class ApiService
 
         if (response.IsSuccessStatusCode)
         {
-            var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<UserProfileDto>(content);
+            return await response.Content.ReadFromJsonAsync<UserProfileDto>();
         }
 
         return null;
@@ -214,9 +189,7 @@ public class ApiService
     public async Task<bool> UpdateProfileAsync(UserProfileUpdateRequest request)
     {
         AddAuthHeader();
-        var json = JsonSerializer.Serialize(request);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
-        var response = await _httpClient.PutAsync("/api/users/profile", content);
+        var response = await _httpClient.PutAsJsonAsync("/api/users/profile", request);
 
         return response.IsSuccessStatusCode;
     }
@@ -224,17 +197,19 @@ public class ApiService
     public async Task<string?> UploadFileAsync(IFormFile file, string type)
     {
         AddAuthHeader();
+        
         using var content = new MultipartFormDataContent();
         using var stream = file.OpenReadStream();
-        content.Add(new StreamContent(stream), "file", file.FileName);
+        var fileContent = new StreamContent(stream);
+        fileContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(file.ContentType);
+        content.Add(fileContent, "file", file.FileName);
 
         var endpoint = type == "banner" ? "/api/files/upload/event-banner" : "/api/files/upload/profile-picture";
         var response = await _httpClient.PostAsync(endpoint, content);
 
         if (response.IsSuccessStatusCode)
         {
-            var responseContent = await response.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<UploadResponse>(responseContent);
+            var result = await response.Content.ReadFromJsonAsync<UploadResponse>();
             return result?.ImageUrl;
         }
 

@@ -17,16 +17,16 @@ public class ApiService
         _httpContextAccessor = httpContextAccessor;
         _configuration = configuration;
         _httpClient.BaseAddress = new Uri(_configuration["ApiBaseUrl"] ?? "https://localhost:5201");
-        _httpClient.DefaultRequestHeaders.Add("Cookie", new Microsoft.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+        _httpClient.DefaultRequestHeaders.Add("Accept", "application/json");
     }
 
     private void AddAuthHeader()
     {
-        var session = _httpContextAccessor.HttpContext?.Session;
-        var cookie = session?.GetString("AuthCookie");
+        // The API uses session-based auth, so we need to forward cookies
+        var cookie = _httpContextAccessor.HttpContext?.Request.Cookies[".AspNetCore.Session"];
         if (!string.IsNullOrEmpty(cookie))
         {
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", cookie);
+            _httpClient.DefaultRequestHeaders.Add("Cookie", $".AspNetCore.Session={cookie}");
         }
     }
 

@@ -16,9 +16,12 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-// Register API client service
+// Register API client service with HttpClientFactory
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<ApiService>();
+
+// Add IHttpContextAccessor for session access
+builder.Services.AddHttpContextAccessor();
 
 // Add CORS
 builder.Services.AddCors(options =>

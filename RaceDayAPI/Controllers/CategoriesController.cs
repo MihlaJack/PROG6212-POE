@@ -103,6 +103,12 @@ public class CategoriesController : ControllerBase
         _context.Categories.Add(newCategory);
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction(nameof(GetAllCategories), new { id = newCategory.CategoryId }, newCategory);
+        return CreatedAtAction(nameof(GetCategoriesByEvent), new { eventId = newCategory.EventId }, new
+        {
+            newCategory.CategoryId,
+            newCategory.Name,
+            newCategory.Description,
+            newCategory.EventId
+        });
     }
 }

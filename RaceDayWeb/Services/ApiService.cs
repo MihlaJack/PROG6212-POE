@@ -35,10 +35,10 @@ public class ApiService
         if (response.IsSuccessStatusCode)
         {
             // Store the API session cookie for future requests
-            var setCookieHeader = response.Headers.GetValues("Set-Cookie").FirstOrDefault();
-            if (setCookieHeader != null)
+            if (response.Headers.TryGetValues("Set-Cookie", out var cookies))
             {
-                var match = System.Text.RegularExpressions.Regex.Match(setCookieHeader, @"\.AspNetCore\.Session=([^;]+)");
+                var setCookieHeader = cookies.FirstOrDefault();
+                var match = System.Text.RegularExpressions.Regex.Match(setCookieHeader ?? string.Empty, @"\.AspNetCore\.Session=([^;]+)");
                 if (match.Success)
                 {
                     var sessionCookie = match.Groups[1].Value;

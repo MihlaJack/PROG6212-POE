@@ -80,7 +80,14 @@ public class EnrolmentsController : ControllerBase
         _context.Enrolments.Add(newEnrolment);
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction(nameof(GetMyEnrolments), new { id = newEnrolment.EnrolmentId }, newEnrolment);
+        return CreatedAtAction(nameof(GetMyEnrolments), new { id = newEnrolment.EnrolmentId }, new
+        {
+            newEnrolment.EnrolmentId,
+            newEnrolment.UserId,
+            newEnrolment.EventId,
+            newEnrolment.CategoryId,
+            newEnrolment.EnrolledAt
+        });
     }
 
     /// <summary>

@@ -80,7 +80,15 @@ public class ResultsController : ControllerBase
         _context.Results.Add(newResult);
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction(nameof(GetMyResults), new { id = newResult.ResultId }, newResult);
+        return CreatedAtAction(nameof(GetMyResults), new { id = newResult.ResultId }, new
+        {
+            newResult.ResultId,
+            newResult.UserId,
+            newResult.EventId,
+            newResult.FinishTime,
+            newResult.FinishingPosition,
+            newResult.RecordedAt
+        });
     }
 
     /// <summary>

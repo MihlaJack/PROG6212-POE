@@ -123,7 +123,19 @@ public class EventsController : ControllerBase
         await _context.SaveChangesAsync();
 
         // Return the created event
-        return CreatedAtAction(nameof(GetEvent), new { id = newEvent.EventId }, newEvent);
+        return CreatedAtAction(nameof(GetEvent), new { id = newEvent.EventId }, new
+        {
+            newEvent.EventId,
+            newEvent.Name,
+            newEvent.Description,
+            newEvent.EventDate,
+            newEvent.Location,
+            newEvent.Distance,
+            newEvent.EventType,
+            newEvent.BannerImageUrl,
+            newEvent.OrganiserId,
+            newEvent.CreatedAt
+        });
     }
 
     /// <summary>
@@ -167,7 +179,19 @@ public class EventsController : ControllerBase
 
         await _context.SaveChangesAsync();
 
-        return Ok(eventToUpdate);
+        return Ok(new
+        {
+            eventToUpdate.EventId,
+            eventToUpdate.Name,
+            eventToUpdate.Description,
+            eventToUpdate.EventDate,
+            eventToUpdate.Location,
+            eventToUpdate.Distance,
+            eventToUpdate.EventType,
+            eventToUpdate.BannerImageUrl,
+            eventToUpdate.OrganiserId,
+            eventToUpdate.CreatedAt
+        });
     }
 
     /// <summary>

@@ -35,3 +35,17 @@ jobs:
     - name: Publish MVC build artifacts
       if: success()
       run: dotnet publish RaceDayWeb/RaceDayWeb.csproj --configuration Release --output ./publish-web
+
+  docker-build:
+    runs-on: ubuntu-latest
+    needs: build-and-test
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Build API Docker image
+      run: docker build -f RaceDayAPI/Dockerfile -t raceday-api .
+
+    - name: Build MVC Docker image
+      run: docker build -f RaceDayWeb/Dockerfile -t raceday-web .

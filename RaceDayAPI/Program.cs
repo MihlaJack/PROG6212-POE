@@ -69,6 +69,13 @@ builder.Services.AddCors(options =>
 // Build the app
 var app = builder.Build();
 
+// Apply any pending EF Core migrations so the database schema is always up to date
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<RaceDayDbContext>();
+    dbContext.Database.Migrate();
+}
+
 // Set up the middleware pipeline
 if (app.Environment.IsDevelopment())
 {

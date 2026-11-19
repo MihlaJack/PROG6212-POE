@@ -169,9 +169,22 @@ docker build -f RaceDayWeb/Dockerfile -t raceday-web .
 
 ### Run Docker Containers
 
+The easiest way to run the containerized application is with Docker Compose, which starts SQL Server, the API, and the MVC frontend together:
+
+```bash
+docker compose up --build
+```
+
+Then open:
+
+- API + Swagger: `http://localhost:5201/swagger`
+- MVC application: `http://localhost:5202`
+
+To run the containers individually instead:
+
 ```bash
 # Run API container
-docker run -p 5201:80 -e "ConnectionStrings__DefaultConnection=Server=host.docker.internal;Database=RaceDayDB;Trusted_Connection=True;MultipleActiveResultSets=true" raceday-api
+docker run -p 5201:80 -e "ConnectionStrings__DefaultConnection=Server=host.docker.internal;Database=RaceDayDB;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True" raceday-api
 
 # Run MVC container
 docker run -p 5202:80 -e "ApiBaseUrl=http://host.docker.internal:5201" raceday-web
@@ -210,7 +223,7 @@ RaceDayAPI/
 │   ├── Program.cs             # Application entry point
 │   ├── appsettings.json       # Configuration
 │   └── Dockerfile             # MVC containerization
-├── Dockerfile                 # Multi-project Dockerfile
+├── docker-compose.yml         # Full stack: SQL Server + API + MVC
 ├── README.md                  # This file
 ├── CHANGELOG.md               # Project changelog
 ├── LICENSE                    # MIT License
@@ -301,9 +314,10 @@ The workflow runs on every push to `main` or `develop` branches, and on all pull
 
 The application is containerized using Docker with multi-stage builds:
 
-- **API Container**: ASP.NET Core runtime
-- **MVC Container**: ASP.NET Core MVC runtime
-- **Multi-project Dockerfile**: Builds both projects
+- **API Container**: ASP.NET Core runtime (`RaceDayAPI/Dockerfile`)
+- **MVC Container**: ASP.NET Core MVC runtime (`RaceDayWeb/Dockerfile`)
+- **SQL Server**: included in `docker-compose.yml` so the full stack runs with one command
+- EF Core migrations are applied automatically when the API starts
 
 ### Build Commands
 
@@ -315,7 +329,14 @@ docker build -f RaceDayWeb/Dockerfile -t raceday-web .
 ### Run Commands
 
 ```bash
-docker run -p 5201:80 -e "ConnectionStrings__DefaultConnection=Server=host.docker.internal;Database=RaceDayDB;Trusted_Connection=True;MultipleActiveResultSets=true" raceday-api
+# Run the full stack (SQL Server + API + MVC) with one command
+docker compose up --build
+
+# API:   https://localhost:5201/swagger
+# MVC:   https://localhost:5202
+
+# Or run containers individually
+docker run -p 5201:80 -e "ConnectionStrings__DefaultConnection=Server=host.docker.internal;Database=RaceDayDB;User Id=sa;Password=YourStrong!Passw0rd;TrustServerCertificate=True" raceday-api
 docker run -p 5202:80 -e "ApiBaseUrl=http://host.docker.internal:5201" raceday-web
 ```
 

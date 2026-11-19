@@ -30,8 +30,8 @@ jobs:
 
     - name: Publish API build artifacts
       if: success()
-      run: dotnet publish RaceDayAPI/RaceDayAPI/RaceDayAPI.csproj --configuration Release --output ./publish-api
+      run: dotnet publish RaceDayAPI/RaceDayAPI.csproj --configuration Release --output ./publish-api
 
     - name: Publish MVC build artifacts
       if: success()
-      run: dotnet publish RaceDayAPI/RaceDayWeb/RaceDayWeb.csproj --configuration Release --output ./publish-web
+      run: dotnet publish RaceDayWeb/RaceDayWeb.csproj --configuration Release --output ./publish-web

@@ -2,6 +2,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using RaceDayWeb.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace RaceDayWeb.Services;
 
@@ -22,7 +23,7 @@ public class ApiService
 
     private void AddAuthHeader()
     {
-        // The API uses session-based auth, so we need to forward cookies
+        // Forward the session cookie to the API so it knows who the user is
         var cookie = _httpContextAccessor.HttpContext?.Request.Cookies[".AspNetCore.Session"];
         if (!string.IsNullOrEmpty(cookie))
         {

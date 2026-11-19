@@ -29,6 +29,11 @@ public class FileUploadController : ControllerBase
             return BadRequest(new { message = "No file uploaded" });
         }
 
+        if (!_blobStorageService.IsConfigured)
+        {
+            return StatusCode(503, new { message = "File upload is unavailable: Azure Blob Storage is not configured." });
+        }
+
         string fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
         using var stream = file.OpenReadStream();
         string imageUrl = await _blobStorageService.UploadFileAsync(stream, fileName, "event-banners");
@@ -46,6 +51,11 @@ public class FileUploadController : ControllerBase
         if (file == null || file.Length == 0)
         {
             return BadRequest(new { message = "No file uploaded" });
+        }
+
+        if (!_blobStorageService.IsConfigured)
+        {
+            return StatusCode(503, new { message = "File upload is unavailable: Azure Blob Storage is not configured." });
         }
 
         string fileName = $"{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";

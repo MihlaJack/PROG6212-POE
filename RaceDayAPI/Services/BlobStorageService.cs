@@ -5,20 +5,29 @@ namespace RaceDayAPI.Services;
 
 public class BlobStorageService : IBlobStorageService
 {
-    private readonly BlobServiceClient _blobServiceClient;
-    private readonly IConfiguration _configuration;
+    private readonly BlobServiceClient? _blobServiceClient;
+
+    public bool IsConfigured { get; }
 
     public BlobStorageService(IConfiguration configuration)
     {
-        _configuration = configuration;
-        string connectionString = _configuration.GetConnectionString("AzureStorage")
-            ?? throw new InvalidOperationException("AzureStorage connection string is not configured");
-        _blobServiceClient = new BlobServiceClient(connectionString);
+        string? connectionString = configuration.GetConnectionString("AzureStorage");
+        IsConfigured = !string.IsNullOrWhiteSpace(connectionString)
+            && !connectionString.Contains("youraccount", StringComparison.OrdinalIgnoreCase)
+            && !connectionString.Contains("yourkey", StringComparison.OrdinalIgnoreCase);
+
+        if (IsConfigured)
+        {
+            _blobServiceClient = new BlobServiceClient(connectionString);
+        }
     }
+
+    private BlobServiceClient Client => _blobServiceClient
+        ?? throw new InvalidOperationException("Azure Blob Storage is not configured.");
 
     public async Task<string> UploadFileAsync(Stream fileStream, string fileName, string containerName)
     {
-        var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+        var containerClient = Client.GetBlobContainerClient(containerName);
         await containerClient.CreateIfNotExistsAsync();
         await containerClient.SetAccessPolicyAsync(PublicAccessType.Blob);
 
@@ -30,14 +39,14 @@ public class BlobStorageService : IBlobStorageService
 
     public async Task DeleteFileAsync(string fileName, string containerName)
     {
-        var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+        var containerClient = Client.GetBlobContainerClient(containerName);
         var blobClient = containerClient.GetBlobClient(fileName);
         await blobClient.DeleteIfExistsAsync();
     }
 
     public string GetBlobUrl(string fileName, string containerName)
     {
-        var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
+        var containerClient = Client.GetBlobContainerClient(containerName);
         var blobClient = containerClient.GetBlobClient(fileName);
         return blobClient.Uri.ToString();
     }
